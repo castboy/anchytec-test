@@ -7,6 +7,7 @@ import (
 	"github.com/spf13/viper"
 	"reflect"
 )
+
 //self-define hookFunc to parse `float64` type  to `decimal.Decimal` type.
 
 func floatToDecimal() mapstructure.DecodeHookFunc {
