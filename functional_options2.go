@@ -4,7 +4,7 @@ import "fmt"
 
 type One struct {
 	Name string
-	Age int
+	Age  int
 	Male bool
 }
 
@@ -25,7 +25,7 @@ func (t *One) setAge(age int) error {
 }
 
 func NewOne(name string, options ...func(t *One) error) (*One, error) {
-	one := One{Name:name}
+	one := One{Name: name}
 
 	for _, option := range options {
 		option(&one)

@@ -8,7 +8,7 @@ import (
 )
 
 type Server struct {
-	timeout time.Duration
+	timeout  time.Duration
 	listener net.Listener
 }
 
@@ -18,7 +18,7 @@ func NewServer(addr string, options ...func(server *Server)) (*Server, error) {
 		return nil, err
 	}
 
-	srv := Server{listener:l}
+	srv := Server{listener: l}
 
 	for _, option := range options {
 		option(&srv)
@@ -43,4 +43,7 @@ func main() {
 	fmt.Println(srv, srv2, err)
 }
 
-
+//Functional options let you write APIs that can grow over time.
+//They enable the default use case to be the simplest.
+//They provide meaningful configuration parameters.
+//Finally they give you access to the entire power of the language to initialize complex values.
