@@ -23,7 +23,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS `symbol`;
 CREATE TABLE `symbol` (
   `id` int(11) NOT NULL,
-  `index` int(11) NOT NULL,
+  `index` int(11) NOT NULL AUTO_INCREMENT,
   `symbol` varchar(255) NOT NULL,
   `source` varchar(255) DEFAULT NULL,
   `symbol_type` int(11) DEFAULT NULL,
@@ -33,7 +33,7 @@ CREATE TABLE `symbol` (
   `contract_size` decimal(28,2) NOT NULL,
   `stops_level` int(11) DEFAULT NULL,
   `margin_initial` decimal(28,2) NOT NULL,
-  `margin_divider` decimal(28,13) NOT NULL,
+  `margin_divider` decimal(28,2) NOT NULL,
   `percentage` decimal(28,2) NOT NULL,
   `profit_mode` int(11) DEFAULT NULL,
   `profit_currency` varchar(255) DEFAULT NULL,
@@ -44,7 +44,8 @@ CREATE TABLE `symbol` (
   `swap_long` decimal(28,2) NOT NULL,
   `swap_short` decimal(28,2) NOT NULL,
   `swap_3_day` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`),
+  PRIMARY KEY (`index`),
+  UNIQUE KEY (`id`),
   UNIQUE KEY (`symbol`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -53,10 +54,10 @@ CREATE TABLE `symbol_session` (
   `id` int(11) NOT NULL,
   `symbol` varchar(255) NOT NULL,
   `type` ENUM("quote", "trade") NOT NULL,
-  `weekday` ENUM("0", "1", "2", "3", "4", "5", "6") NOT NULL, /* 0->sunday, ... */
-  `time` varchar(255) NOT NULL, /* example: 00:00-20:55 */
-  PRIMARY KEY (`id`),
-  FOREIGN KEY (`id`) REFERENCES `symbol` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  `weekday` ENUM("0", "1", "2", "3", "4", "5", "6") NOT NULL COMMENT '0->Sunday, 1->Monday, ...',
+  `time` varchar(255) NOT NULL COMMENT '00:00-20:55',
+  PRIMARY KEY (`id`)
+  /* FOREIGN KEY (`id`) REFERENCES `symbol` (`id`) ON DELETE CASCADE ON UPDATE CASCADE */
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `holiday`;
@@ -64,9 +65,9 @@ CREATE TABLE `holiday` (
   `id` int(11) NOT NULL,
   `symbol` varchar(255) NOT NULL,
   `date` DATE NOT NULL,
-  `time` varchar(255) NOT NULL, /* example: 00:00-20:55 */
-  PRIMARY KEY (`id`),
-  FOREIGN KEY (`id`) REFERENCES `symbol` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  `time` varchar(255) NOT NULL COMMENT '00:00-20:55',
+  PRIMARY KEY (`id`)
+  /* FOREIGN KEY (`id`) REFERENCES `symbol` (`id`) ON DELETE CASCADE ON UPDATE CASCADE */
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 SET FOREIGN_KEY_CHECKS = 1;
