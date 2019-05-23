@@ -14,9 +14,6 @@
  Date: 21/05/2019 17:18:11
 */
 
-SET NAMES utf8mb4;
-SET FOREIGN_KEY_CHECKS = 0;
-
 -- ----------------------------
 -- Table structure for symbol
 -- ----------------------------
@@ -69,9 +66,3 @@ CREATE TABLE `holiday` (
   PRIMARY KEY (`id`)
   /* FOREIGN KEY (`id`) REFERENCES `symbol` (`id`) ON DELETE CASCADE ON UPDATE CASCADE */
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-SET FOREIGN_KEY_CHECKS = 1;
-
-/* example */
-insert into `symbol_session`(id, symbol, type, weekday, time) values(4, 'AUDCHF', 'quote', '0', '00:00-00:00');
-insert into `holiday`(id, symbol, date, time) values(4, 'AUDCHF', '2019-05-21', '00:00-00:00');

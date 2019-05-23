@@ -14,9 +14,6 @@
  Date: 23/05/2019 11:52:21
 */
 
-SET NAMES utf8mb4;
-SET FOREIGN_KEY_CHECKS = 0;
-
 -- ----------------------------
 -- Table structure for order
 -- ----------------------------
@@ -25,7 +22,7 @@ CREATE TABLE `order` (
   `ticket` int(11) NOT NULL,
   `login` int(11) NOT NULL,
   `symbol` char(16) NOT NULL,
-  `cmd` int(11) NOT NULL,
+  `cmd` tinyint(4) NOT NULL,
   `volume` decimal(28,2) NOT NULL,
   `open_price` decimal(28,2) NOT NULL,
   `close_price` decimal(28,2) NOT NULL,
@@ -48,9 +45,6 @@ CREATE TABLE `order` (
   `expiration` datetime NOT NULL COMMENT 'pending order expiration time',
   `comment` varchar(255) DEFAULT NULL COMMENT 'comment to an order',
   `reason` int(11) NOT NULL COMMENT 'reason for placing the order, 0-client, 1-expert, 2-dealer, 3-signal, 4-gateway, 5-mobile, 6-web, 7-api',
-  `delete_flag` tinyint(1) NOT NULL COMMENT 'marked order as deleted when SL/TP/SO activation',
   PRIMARY KEY (`ticket`,`login`),
   KEY `login` (`login`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-SET FOREIGN_KEY_CHECKS = 1;

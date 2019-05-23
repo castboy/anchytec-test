@@ -14,9 +14,6 @@
  Date: 23/05/2019 14:26:12
 */
 
-SET NAMES utf8mb4;
-SET FOREIGN_KEY_CHECKS = 0;
-
 -- ----------------------------
 -- Table structure for account
 -- ----------------------------
@@ -29,5 +26,3 @@ CREATE TABLE `account` (
   `margin_stop_out` decimal(28,2) NOT NULL,
   PRIMARY KEY (`login`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-SET FOREIGN_KEY_CHECKS = 1;
