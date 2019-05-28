@@ -2,9 +2,9 @@ package main
 
 import "fmt"
 
-type Config struct{
+type Config struct {
 	reticulatedSplines bool
-	cities int
+	cities             int
 }
 
 type Terrain struct {

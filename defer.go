@@ -23,5 +23,3 @@ func main() {
 	return
 	defer fmt.Println("not reachable")
 }
-
-

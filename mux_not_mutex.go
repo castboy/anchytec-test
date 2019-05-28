@@ -1,8 +1,8 @@
 package main
 
 import (
-	"net"
 	"io"
+	"net"
 )
 
 // mux not mutex.

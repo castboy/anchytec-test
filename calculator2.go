@@ -10,7 +10,7 @@ type Calculator2 struct {
 }
 
 func NewCalculator2(acc float64) *Calculator2 {
-	return &Calculator2{acc:acc}
+	return &Calculator2{acc: acc}
 }
 
 func Add2(b float64) func(float64) float64 {
@@ -37,4 +37,3 @@ func main() {
 	cal.Do(Sqrt2())
 	fmt.Println(cal)
 }
-

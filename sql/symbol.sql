@@ -46,14 +46,15 @@ CREATE TABLE `symbol` (
   UNIQUE KEY (`symbol`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `symbol_session`;
-CREATE TABLE `symbol_session` (
+DROP TABLE IF EXISTS `session`;
+CREATE TABLE `session` (
   `id` int(11) NOT NULL,
   `symbol` varchar(255) NOT NULL,
   `type` ENUM("quote", "trade") NOT NULL,
   `weekday` ENUM("0", "1", "2", "3", "4", "5", "6") NOT NULL COMMENT '0->Sunday, 1->Monday, ...',
   `time` varchar(255) NOT NULL COMMENT '00:00-20:55',
-  PRIMARY KEY (`id`)
+  KEY (`id`),
+  KEY (`symbol`)
   /* FOREIGN KEY (`id`) REFERENCES `symbol` (`id`) ON DELETE CASCADE ON UPDATE CASCADE */
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
