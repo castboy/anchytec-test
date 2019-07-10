@@ -17,7 +17,7 @@ package main
 func main() {
 	type Person struct {
 		Name string
-		Age int
+		Age  int
 	}
 
 	person := Person{

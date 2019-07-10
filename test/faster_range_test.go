@@ -1,6 +1,7 @@
 package test
 
 import (
+	"fmt"
 	"testing"
 )
 
@@ -54,5 +55,31 @@ func BenchmarkFb(b *testing.B) {
 
 	for i := 0; i < b.N; i++ {
 		Fb(mks)
+	}
+}
+
+var s = "éक्षिaπ囧éक्षिaπ囧éक्षिaπ囧éक्षिaπ囧éक्षिaπ囧éक्षिaπ囧éक्षिaπ囧éक्षिaπ囧éक्षिaπ囧"
+
+func RangeByteLower() {
+	for i := 0; i < len(s); i++ {
+		fmt.Sprintf("The byte at index %v: 0x%x \n", i, s[i])
+	}
+}
+
+func RangeByteFaster() {
+	for i, b := range []byte(s) {
+		fmt.Sprintf("The byte at index %v: 0x%x \n", i, b)
+	}
+}
+
+func BenchmarkRangeByteLower(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		RangeByteLower()
+	}
+}
+
+func BenchmarkRangeByteFaster(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		RangeByteFaster()
 	}
 }
