@@ -23,7 +23,7 @@ func TestMyThing(t *testing.T) {
 	second := mockObj.EXPECT().RtnChan().Return(nil)
 	mockObj.EXPECT().RtnChan().Return(ch).After(first).After(second)
 
-	mockObj.EXPECT().Add(1, 2).Do(func(arg0, arg1 int){
+	mockObj.EXPECT().Add(1, 2).Do(func(arg0, arg1 int) {
 		fmt.Printf("%d + %d = %d\n", arg0, arg1, arg0+arg1)
 	})
 
