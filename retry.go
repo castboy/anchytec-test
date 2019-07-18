@@ -15,9 +15,8 @@ func main() {
 		return errors.New("basic error")
 	}
 
-	const duration = time.Second
 	const Incremental = time.Second
-	incremental := backoff.Incremental(duration, Incremental)
+	incremental := backoff.BinaryExponential(duration, Incremental)
 	strategy1 := strategy.Backoff(incremental)
 
 	strategy2 := strategy.Limit(5)
