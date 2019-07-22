@@ -14,7 +14,7 @@ import (
 // `SELECT `id`, `name`, `salary` FROM `account4` WHERE id=1 AND name='wmg' AND `salary`='100' LIMIT 1`
 
 type Person struct {
-	Id     int64  `xorm:"id autoincr"`// 这里不设置xorm tag,插入成功后，last id将赋给该字段
+	Id     int64           `xorm:"id autoincr"` // 这里不设置xorm tag,插入成功后，last id将赋给该字段
 	Name   string          `xorm:"name"`
 	Salary decimal.Decimal `xorm:"salary decimal(28,0) NOT NULL"`
 	// `xorm:"xorm-type"`
@@ -30,7 +30,8 @@ var x *xorm.Engine
 
 func main() {
 	x, err := xorm.NewEngine("mysql", "root:wang1234@/symbol_test?charset=utf8")
-	x.DatabaseTZ = time.UTC
+	x.DatabaseTZ = time.UTC // local time saved as corresponding db utc time.
+	x.TZLocation = time.Local // db utc time analyzed to corresponding local time.
 
 	//if err = x.Sync2(new(Person)); err != nil {
 	//	log.Fatalf("Fail to sync database: %v\n", err)
@@ -57,6 +58,7 @@ func main() {
 	fmt.Println(err)
 
 	a := &Person{}
-	has, err := x.Where(map[string]interface{}{"id": 12, "name": "wmg"}).NoAutoCondition(true).Get(a)
-	fmt.Println(has, a, err)
+	has, err := x.Where(map[string]interface{}{"id": i}).NoAutoCondition(true).Get(a)
+	fmt.Println(has, err)
+	fmt.Printf("%+v", a)
 }
