@@ -5,6 +5,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/go-xorm/xorm"
 	"github.com/shopspring/decimal"
+	"log"
 	"time"
 )
 
@@ -33,10 +34,11 @@ func main() {
 	x.DatabaseTZ = time.UTC // local time saved as corresponding db utc time.
 	x.TZLocation = time.Local // db utc time analyzed to corresponding local time.
 
-	//if err = x.Sync2(new(Person)); err != nil {
-	//	log.Fatalf("Fail to sync database: %v\n", err)
-	//}
+	if err = x.Sync2(new(Person)); err != nil {
+		log.Fatalf("Fail to sync database: %v\n", err)
+	}
 
+	x.ShowSQL(true)
 	person := Person{
 		Name:      "wmg",
 		Salary:    decimal.NewFromFloat(100),
@@ -60,5 +62,14 @@ func main() {
 	a := &Person{}
 	has, err := x.Where(map[string]interface{}{"id": i}).NoAutoCondition(true).Get(a)
 	fmt.Println(has, err)
-	fmt.Printf("%+v", a)
+	fmt.Printf("%+v\n", a)
+
+	// all satisfy condition id sum.
+	var id int64
+	err = x.Table(Person{}).Where("name = ? and id < 100", "wmg").NoAutoCondition(true).Iterate(new(Person), func(idx int, bean interface{}) error {
+		ha := bean.(*Person)
+		id += ha.Id
+		return nil
+	})
+	fmt.Println(err, id)
 }
