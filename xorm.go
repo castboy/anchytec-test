@@ -15,7 +15,7 @@ import (
 // `SELECT `id`, `name`, `salary` FROM `account4` WHERE id=1 AND name='wmg' AND `salary`='100' LIMIT 1`
 
 type Person struct {
-	Id     int64           `xorm:"id autoincr"` // 这里不设置xorm tag,插入成功后，last id将赋给该字段
+	Id     int64           `xorm:"id pk autoincr"` // 这里不设置xorm tag,插入成功后，last id将赋给该字段
 	Name   string          `xorm:"name"`
 	Salary decimal.Decimal `xorm:"salary decimal(28,0) NOT NULL"`
 	// `xorm:"xorm-type"`
@@ -25,6 +25,13 @@ type Person struct {
 	DateTime  time.Time `xorm:"datetime"`
 	Created   time.Time `xorm:"created"`
 	Updated   time.Time `xorm:"updated"`
+
+	Other `xorm:"extends"`
+}
+
+type Other struct {
+	A int `xorm:"a"`
+	B int `xorm:"b"`
 }
 
 var x *xorm.Engine
@@ -46,6 +53,11 @@ func main() {
 		Time:      time.Now().UTC(),
 		Date:      time.Now().UTC(),
 		DateTime:  time.Now().UTC(),
+
+		Other: Other{
+			A: 1,
+			B: 2,
+		},
 	}
 
 	i, err := x.Insert(&person)
