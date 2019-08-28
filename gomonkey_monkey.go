@@ -88,6 +88,14 @@ func main() {
 	fmt.Println(s == "gomonkey")
 	s, err = funcSeq()
 	fmt.Println(s == "", err)
+
+	var myInt2 MyInt = 10
+	gomonkey.ApplyMethod(reflect.TypeOf(myInt2), "Method", func(myI MyInt) int {
+		return int(myI) + 1
+	})
+
+	v = myInt2.Method()
+	fmt.Println(v == 11)
 }
 
 func target(a string) string {
