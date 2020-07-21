@@ -1,6 +1,7 @@
 package core
 
 import (
+	"fmt"
 	"runtime"
 )
 
@@ -21,6 +22,7 @@ const (
 	systemErr errCode = iota + 1
 	tradeErr
 	mysqlErr
+	kafkaErr
 	argsErr
 	assertErr
 	unknowErr
@@ -30,6 +32,7 @@ var errCodeMsg = map[errCode]string{
 	systemErr: "System",
 	tradeErr:  "Trade",
 	mysqlErr:  "Mysql",
+	kafkaErr:  "Kafka",
 	argsErr:   "Args",
 	assertErr: "Assert",
 	unknowErr: "Unknow",
@@ -62,4 +65,13 @@ func (me *baseErrer) setCodeSubSub(subSub errCodeSubSub) {
 
 func (me *baseErrer) AppendComment(v interface{}) {
 	me.comment = append(me.comment, v)
+}
+
+func (me *baseErrer) Error(errCodeMsg string) string {
+	comment := ""
+	for j := range me.comment {
+		comment = fmt.Sprintf(" %s, %+v,", comment, me.comment[j])
+	}
+
+	return fmt.Sprintf("ERROR_CODE_MSG: %s, ERROR_ORIGIN: %v, COMMENT: %s", errCodeMsg, me.originErr, comment)
 }

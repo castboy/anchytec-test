@@ -6,7 +6,7 @@ import (
 )
 
 func MysqlInsertOrder(err error, res []*db.TradeTransResult) *core.MysqlErrer {
-	me := core.NewMysqlErrer(core.MysqlInsert, core.MysqlInsertOrder)
+	me := core.NewMysqlErrer(core.Insert, core.Order)
 	me.SetOriginError(err)
 
 	for i := range res {
