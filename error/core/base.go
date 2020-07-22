@@ -2,15 +2,13 @@ package core
 
 import (
 	"encoding/json"
-	"fmt"
-	"runtime"
 )
 
 type baseErrer struct {
 	code       errCode
 	codeSub    errCodeSub
 	codeSubSub errCodeSubSub
-	funcName   string
+	callFunc   string
 	originErr  error
 	comment    []Comment
 }
@@ -44,29 +42,26 @@ var errCodeMsg = map[errCode]string{
 	unknowErr: "Unknow",
 }
 
-func newErr(code errCode, subCode errCodeSub) *baseErrer {
-	err := &baseErrer{
-		code:    code,
-		codeSub: subCode,
+func newErr() *baseErrer {
+	return &baseErrer{
+		callFunc: getCallFunc(),
 	}
-
-	err.setCallFuncName()
-
-	return err
 }
 
-func (me *baseErrer) setCallFuncName() {
-	pc := make([]uintptr, 1)
-	runtime.Callers(2, pc)
-	me.funcName = runtime.FuncForPC(pc[0]).Name()
+func (me *baseErrer) setCode(code errCode) {
+	me.code = code
 }
 
-func (me *baseErrer) setOriginError(err error) {
-	me.originErr = err
+func (me *baseErrer) setCodeSub(sub errCodeSub) {
+	me.codeSub = sub
 }
 
 func (me *baseErrer) setCodeSubSub(subSub errCodeSubSub) {
 	me.codeSubSub = subSub
+}
+
+func (me *baseErrer) setOriginErr(err error) {
+	me.originErr = err
 }
 
 func (me *baseErrer) appendComment(cmt ...Comment) {
@@ -78,6 +73,10 @@ func (me *baseErrer) encodeComment() string {
 	return string(comment)
 }
 
-func encodeError(errCodeMsg, commentMsg string, errOrigin error, ) string {
-	return fmt.Sprintf("ERROR_CODE_MSG: %s, ERROR_ORIGIN: %v, COMMENT: %s", errCodeMsg, errOrigin, commentMsg)
+func (me *baseErrer) getCallFunc() string {
+	return me.callFunc
+}
+
+func (me *baseErrer) getOriginErr() error {
+	return me.originErr
 }

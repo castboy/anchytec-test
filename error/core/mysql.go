@@ -39,10 +39,13 @@ type MysqlErrer struct {
 	*baseErrer
 }
 
-func NewMysqlErrer(opType mysqlOpType, opObj mysqlOpObj, comment ...Comment) *MysqlErrer {
-	base := newErr(mysqlErr, errCodeSub(opType))
+func NewMysqlErrer(errOrigin error, opType mysqlOpType, opObj mysqlOpObj, comment ...Comment) *MysqlErrer {
+	base := newErr()
+	base.setCode(mysqlErr)
+	base.setCodeSub(errCodeSub(opType))
 	base.setCodeSubSub(errCodeSubSub(opObj))
 	base.appendComment(comment...)
+	base.setOriginErr(errOrigin)
 
 	return &MysqlErrer{base}
 }
@@ -52,5 +55,5 @@ func (i *MysqlErrer) encodeErrCode() string {
 }
 
 func (i *MysqlErrer) Error() string {
-	return encodeError(i.encodeErrCode(), i.baseErrer.encodeComment(), i.originErr)
+	return encodeErrMsg(i)
 }

@@ -29,15 +29,21 @@ type KafkaErrer struct {
 	*baseErrer
 }
 
-func NewKafkaErrer(opType kafkaOpType, opObj kafkaOpObj) *KafkaErrer {
-	base := newErr(kafkaErr, errCodeSub(opType))
+func NewKafkaErrer(errOrigin error, opType kafkaOpType, opObj kafkaOpObj, comment ...Comment) *KafkaErrer {
+	base := newErr()
+	base.setCode(kafkaErr)
+	base.setCodeSub(errCodeSub(opType))
 	base.setCodeSubSub(errCodeSubSub(opObj))
+	base.appendComment(comment...)
+	base.setOriginErr(errOrigin)
 
 	return &KafkaErrer{base}
 }
 
-func (i *KafkaErrer) Error() string {
-	errCodeMsg := fmt.Sprintf("%s, %s, %s", errCodeMsg[i.code], kafkaOpTypeMsg[kafkaOpType(i.codeSub)], kafkaOpObjMsg[kafkaOpObj(i.codeSubSub)])
+func (i *KafkaErrer) encodeErrCode() string {
+	return fmt.Sprintf("%s, %s, %s", errCodeMsg[i.code], kafkaOpTypeMsg[kafkaOpType(i.codeSub)], kafkaOpObjMsg[kafkaOpObj(i.codeSubSub)])
+}
 
-	return i.baseErrer.Error(errCodeMsg)
+func (i *KafkaErrer) Error() string {
+	return encodeErrMsg(i)
 }
