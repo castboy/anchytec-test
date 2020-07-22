@@ -1,6 +1,7 @@
 package core
 
 import (
+	"encoding/json"
 	"fmt"
 	"runtime"
 )
@@ -11,7 +12,12 @@ type baseErrer struct {
 	codeSubSub errCodeSubSub
 	funcName   string
 	originErr  error
-	comment    []interface{}
+	comment    []Comment
+}
+
+type Comment struct {
+	k string
+	v interface{}
 }
 
 type errCode uint
@@ -55,7 +61,7 @@ func (me *baseErrer) setCallFuncName() {
 	me.funcName = runtime.FuncForPC(pc[0]).Name()
 }
 
-func (me *baseErrer) SetOriginError(err error) {
+func (me *baseErrer) setOriginError(err error) {
 	me.originErr = err
 }
 
@@ -63,15 +69,15 @@ func (me *baseErrer) setCodeSubSub(subSub errCodeSubSub) {
 	me.codeSubSub = subSub
 }
 
-func (me *baseErrer) AppendComment(v interface{}) {
-	me.comment = append(me.comment, v)
+func (me *baseErrer) appendComment(cmt ...Comment) {
+	me.comment = append(me.comment, cmt...)
 }
 
-func (me *baseErrer) Error(errCodeMsg string) string {
-	comment := ""
-	for j := range me.comment {
-		comment = fmt.Sprintf(" %s, %+v,", comment, me.comment[j])
-	}
+func (me *baseErrer) encodeComment() string {
+	comment, _ := json.Marshal(me.comment)
+	return string(comment)
+}
 
-	return fmt.Sprintf("ERROR_CODE_MSG: %s, ERROR_ORIGIN: %v, COMMENT: %s", errCodeMsg, me.originErr, comment)
+func encodeError(errCodeMsg, commentMsg string, errOrigin error, ) string {
+	return fmt.Sprintf("ERROR_CODE_MSG: %s, ERROR_ORIGIN: %v, COMMENT: %s", errCodeMsg, errOrigin, commentMsg)
 }

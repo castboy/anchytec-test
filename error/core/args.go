@@ -1,51 +1,56 @@
 package core
 
+type ReqType errCodeSub
+type TradeReq errCodeSubSub
+
 const (
-	trade errCodeSub = iota + 1
+	Trade ReqType = iota + 1
 )
 
-var errCodeMsgArgs = map[errCodeSub]string{
-	trade: "trade",
+var argsOpTypeMsg = map[ReqType]string{
+	Trade: "Trade",
 }
 
 const (
-	tradeTypeErr errCodeSubSub = iota + 1
-	tradeLoginErr
-	tradeTicketErr
-	tradeCmdErr
-	tradeSymbolErr
-	tradeLeverageErr
-	tradeVolumeErr
-	tradeTpErr
-	tradeSlErr
-	tradeCommentErr
-	tradeClientPriceErr
-	tradeClientTimeErr
-	tradePendingPriceErr
-	tradeExpirationErr
-	tradeAmountErr
+	TypeErr TradeReq = iota + 1
+	LoginErr
+	TicketErr
+	CmdErr
+	SymbolErr
+	LeverageErr
+	VolumeErr
+	TpErr
+	SlErr
+	CommentErr
+	ClientPriceErr
+	ClientTimeErr
+	PendingPriceErr
+	ExpirationErr
+	AmountErr
 )
 
-var errCodeMsgArgsTrade = map[errCodeSubSub]string{
-	tradeTypeErr:         "type",
-	tradeLoginErr:        "login",
-	tradeTicketErr:       "ticket",
-	tradeCmdErr:          "cmd",
-	tradeSymbolErr:       "symbol",
-	tradeLeverageErr:     "leverage",
-	tradeVolumeErr:       "volume",
-	tradeTpErr:           "tp",
-	tradeSlErr:           "sl",
-	tradeCommentErr:      "comment",
-	tradeClientPriceErr:  "client-price",
-	tradeClientTimeErr:   "client-time",
-	tradePendingPriceErr: "pending-price",
-	tradeExpirationErr:   "expiration",
-	tradeAmountErr:       "amount",
+var errCodeMsgArgsTrade = map[TradeReq]string{
+	TypeErr:         "type",
+	LoginErr:        "login",
+	TicketErr:       "ticket",
+	CmdErr:          "cmd",
+	SymbolErr:       "symbol",
+	LeverageErr:     "leverage",
+	VolumeErr:       "volume",
+	TpErr:           "tp",
+	SlErr:           "sl",
+	CommentErr:      "comment",
+	ClientPriceErr:  "client-price",
+	ClientTimeErr:   "client-time",
+	PendingPriceErr: "pending-price",
+	ExpirationErr:   "expiration",
+	AmountErr:       "amount",
 }
 
-type argsErrer struct {
+type ArgsErrer struct {
 	*baseErrer
 }
 
-func
+func NewArgsErrer(opType ReqType, subSub errCodeSubSub) *ArgsErrer {
+	return &ArgsErrer{}
+}

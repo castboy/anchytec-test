@@ -39,15 +39,18 @@ type MysqlErrer struct {
 	*baseErrer
 }
 
-func NewMysqlErrer(opType mysqlOpType, opObj mysqlOpObj) *MysqlErrer {
+func NewMysqlErrer(opType mysqlOpType, opObj mysqlOpObj, comment ...Comment) *MysqlErrer {
 	base := newErr(mysqlErr, errCodeSub(opType))
 	base.setCodeSubSub(errCodeSubSub(opObj))
+	base.appendComment(comment...)
 
 	return &MysqlErrer{base}
 }
 
-func (i *MysqlErrer) Error() string {
-	errCodeMsg := fmt.Sprintf("%s, %s, %s", errCodeMsg[i.code], mysqlOpTypeMsg[mysqlOpType(i.codeSub)], mysqlOpObjMsg[mysqlOpObj(i.codeSubSub)])
+func (i *MysqlErrer) encodeErrCode() string {
+	return fmt.Sprintf("%s, %s, %s", errCodeMsg[i.code], mysqlOpTypeMsg[mysqlOpType(i.codeSub)], mysqlOpObjMsg[mysqlOpObj(i.codeSubSub)])
+}
 
-	return i.baseErrer.Error(errCodeMsg)
+func (i *MysqlErrer) Error() string {
+	return encodeError(i.encodeErrCode(), i.baseErrer.encodeComment(), i.originErr)
 }
