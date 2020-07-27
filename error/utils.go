@@ -5,7 +5,7 @@ import (
 )
 
 const (
-	newDeep    = 3 //NewMysqlErrer()/NewKafkaErrer()...
+	newDeep    = 4 //NewMysqlErrer()/NewKafkaErrer()...
 	appendDeep = 4 // AppendCallFunc()
 )
 

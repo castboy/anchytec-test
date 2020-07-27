@@ -29,15 +29,7 @@ type KafkaErrer struct {
 
 func NewKafkaErrer(errOrigin error, opType kafkaOpType, opObj kafkaOpObj, comment ...Comment) *KafkaErrer {
 	base := newErr()
-	base.setCode(kafkaErr)
-	base.setCodeSub(errCodeSub(opType))
-	base.setCodeSubSub(errCodeSubSub(opObj))
-	base.setOriginErr(errOrigin)
-
-	f := getCallFunc(newDeep)
-	base.appendCallFunc(f)
-
-	base.appendComment(comment...)
+	base.init(errOrigin, mysqlErr, errCodeSub(opType), errCodeSubSub(opObj), comment...)
 
 	return &KafkaErrer{base}
 }

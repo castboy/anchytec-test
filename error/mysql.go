@@ -37,15 +37,7 @@ type MysqlErrer struct {
 
 func NewMysqlErrer(errOrigin error, opType mysqlOpType, opObj mysqlOpObj, comment ...Comment) *MysqlErrer {
 	base := newErr()
-	base.setCode(mysqlErr)
-	base.setCodeSub(errCodeSub(opType))
-	base.setCodeSubSub(errCodeSubSub(opObj))
-	base.setOriginErr(errOrigin)
-
-	f := getCallFunc(newDeep)
-	base.appendCallFunc(f)
-
-	base.appendComment(comment...)
+	base.init(errOrigin, mysqlErr, errCodeSub(opType), errCodeSubSub(opObj), comment...)
 
 	return &MysqlErrer{base}
 }

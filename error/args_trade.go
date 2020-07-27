@@ -42,17 +42,9 @@ type TradeArgsErrer struct {
 	*baseErrer
 }
 
-func NewTradeArgsErrer(errOrigin error, reqType argsType, tradeArg tradeArg, comment ...Comment) *TradeArgsErrer {
+func NewTradeArgsErrer(errOrigin error, argsType argsType, tradeArg tradeArg, comment ...Comment) *TradeArgsErrer {
 	base := newErr()
-	base.setCode(argsErr)
-	base.setCodeSub(errCodeSub(reqType))
-	base.setCodeSubSub(errCodeSubSub(tradeArg))
-	base.setOriginErr(errOrigin)
-
-	f := getCallFunc(newDeep)
-	base.appendCallFunc(f)
-
-	base.appendComment(comment...)
+	base.init(errOrigin, mysqlErr, errCodeSub(argsType), errCodeSubSub(tradeArg), comment...)
 
 	return &TradeArgsErrer{base}
 }

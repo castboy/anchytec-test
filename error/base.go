@@ -47,6 +47,18 @@ func newErr() *baseErrer {
 	return res
 }
 
+func (me *baseErrer) init(errOrigin error, code errCode, codeSub errCodeSub, codeSubSub errCodeSubSub, comment ...Comment) {
+	me.setCode(code)
+	me.setCodeSub(codeSub)
+	me.setCodeSubSub(codeSubSub)
+	me.setOriginErr(errOrigin)
+
+	f := getCallFunc(newDeep)
+	me.appendCallFunc(f)
+
+	me.appendComment(comment...)
+}
+
 func (me *baseErrer) setCode(code errCode) {
 	me.code = code
 }
