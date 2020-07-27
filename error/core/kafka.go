@@ -34,8 +34,9 @@ func NewKafkaErrer(errOrigin error, opType kafkaOpType, opObj kafkaOpObj, commen
 	base.setCode(kafkaErr)
 	base.setCodeSub(errCodeSub(opType))
 	base.setCodeSubSub(errCodeSubSub(opObj))
-	base.appendComment(comment...)
 	base.setOriginErr(errOrigin)
+	base.AppendCallFunc()
+	base.appendComment(comment...)
 
 	return &KafkaErrer{base}
 }

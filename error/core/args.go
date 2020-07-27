@@ -1,18 +1,18 @@
 package core
 
-type ReqType errCodeSub
-type TradeReq errCodeSubSub
+type reqType errCodeSub
+type tradeReq errCodeSubSub
 
 const (
-	Trade ReqType = iota + 1
+	Trade reqType = iota + 1
 )
 
-var argsOpTypeMsg = map[ReqType]string{
+var reqTypeMsg = map[reqType]string{
 	Trade: "Trade",
 }
 
 const (
-	TypeErr TradeReq = iota + 1
+	TypeErr tradeReq = iota + 1
 	LoginErr
 	TicketErr
 	CmdErr
@@ -29,7 +29,7 @@ const (
 	AmountErr
 )
 
-var errCodeMsgArgsTrade = map[TradeReq]string{
+var tradeArgsMsg = map[tradeReq]string{
 	TypeErr:         "type",
 	LoginErr:        "login",
 	TicketErr:       "ticket",
@@ -51,6 +51,6 @@ type ArgsErrer struct {
 	*baseErrer
 }
 
-func NewArgsErrer(opType ReqType, subSub errCodeSubSub) *ArgsErrer {
+func NewArgsErrer(opType reqType, subSub errCodeSubSub) *ArgsErrer {
 	return &ArgsErrer{}
 }

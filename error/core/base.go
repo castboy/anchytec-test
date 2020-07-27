@@ -8,8 +8,8 @@ type baseErrer struct {
 	code       errCode
 	codeSub    errCodeSub
 	codeSubSub errCodeSubSub
-	callFunc   string
 	originErr  error
+	callFunc   []string
 	comment    []Comment
 }
 
@@ -43,9 +43,8 @@ var errCodeMsg = map[errCode]string{
 }
 
 func newErr() *baseErrer {
-	return &baseErrer{
-		callFunc: getCallFunc(),
-	}
+	res := &baseErrer{}
+	return res
 }
 
 func (me *baseErrer) setCode(code errCode) {
@@ -64,8 +63,30 @@ func (me *baseErrer) setOriginErr(err error) {
 	me.originErr = err
 }
 
+func (me *baseErrer) appendCallFunc(f ...string) {
+	me.callFunc = append(me.callFunc, f...)
+}
+
+func (me *baseErrer) AppendCallFunc() {
+	f := getCallFunc()
+	me.appendCallFunc(f)
+}
+
 func (me *baseErrer) appendComment(cmt ...Comment) {
 	me.comment = append(me.comment, cmt...)
+}
+
+func (me *baseErrer) encodeCallFunc() string {
+	l := len(me.callFunc)
+	s := ""
+	for i := l-1; i >= 0; i-- {
+		s += me.callFunc[i]
+		if i != 0 {
+			s += "->"
+		}
+	}
+
+	return s
 }
 
 func (me *baseErrer) encodeComment() string {
@@ -73,7 +94,7 @@ func (me *baseErrer) encodeComment() string {
 	return string(comment)
 }
 
-func (me *baseErrer) getCallFunc() string {
+func (me *baseErrer) getCallFunc() []string {
 	return me.callFunc
 }
 

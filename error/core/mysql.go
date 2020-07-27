@@ -44,8 +44,9 @@ func NewMysqlErrer(errOrigin error, opType mysqlOpType, opObj mysqlOpObj, commen
 	base.setCode(mysqlErr)
 	base.setCodeSub(errCodeSub(opType))
 	base.setCodeSubSub(errCodeSubSub(opObj))
-	base.appendComment(comment...)
 	base.setOriginErr(errOrigin)
+	base.AppendCallFunc()
+	base.appendComment(comment...)
 
 	return &MysqlErrer{base}
 }
