@@ -68,7 +68,7 @@ func (me *baseErrer) appendCallFunc(f ...string) {
 }
 
 func (me *baseErrer) AppendCallFunc() {
-	f := getCallFunc()
+	f := getCallFunc(appendDeep)
 	me.appendCallFunc(f)
 }
 
@@ -92,10 +92,6 @@ func (me *baseErrer) encodeCallFunc() string {
 func (me *baseErrer) encodeComment() string {
 	comment, _ := json.Marshal(me.comment)
 	return string(comment)
-}
-
-func (me *baseErrer) getCallFunc() []string {
-	return me.callFunc
 }
 
 func (me *baseErrer) getOriginErr() error {

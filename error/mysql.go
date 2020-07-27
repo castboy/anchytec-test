@@ -45,14 +45,17 @@ func NewMysqlErrer(errOrigin error, opType mysqlOpType, opObj mysqlOpObj, commen
 	base.setCodeSub(errCodeSub(opType))
 	base.setCodeSubSub(errCodeSubSub(opObj))
 	base.setOriginErr(errOrigin)
-	base.AppendCallFunc()
+
+	f := getCallFunc(newDeep)
+	base.appendCallFunc(f)
+
 	base.appendComment(comment...)
 
 	return &MysqlErrer{base}
 }
 
 func (i *MysqlErrer) encodeErrCode() string {
-	return fmt.Sprintf("%s, %s, %s", errCodeMsg[i.code], mysqlOpTypeMsg[mysqlOpType(i.codeSub)], mysqlOpObjMsg[mysqlOpObj(i.codeSubSub)])
+	return fmt.Sprintf("%s/%s/%s", errCodeMsg[i.code], mysqlOpTypeMsg[mysqlOpType(i.codeSub)], mysqlOpObjMsg[mysqlOpObj(i.codeSubSub)])
 }
 
 func (i *MysqlErrer) Error() string {

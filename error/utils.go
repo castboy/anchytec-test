@@ -4,8 +4,13 @@ import (
 	"runtime"
 )
 
-func getCallFunc() string {
+const (
+	newDeep    = 3 //NewMysqlErrer()/NewKafkaErrer()...
+	appendDeep = 4 // AppendCallFunc()
+)
+
+func getCallFunc(deep int) string {
 	pc := make([]uintptr, 1)
-	runtime.Callers(1, pc)
+	runtime.Callers(deep, pc)
 	return runtime.FuncForPC(pc[0]).Name()
 }
