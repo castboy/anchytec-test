@@ -1,9 +1,5 @@
 package error
 
-import (
-	"fmt"
-)
-
 type mysqlOpType errCodeSub
 type mysqlOpObj errCodeSubSub
 
@@ -54,8 +50,12 @@ func NewMysqlErrer(errOrigin error, opType mysqlOpType, opObj mysqlOpObj, commen
 	return &MysqlErrer{base}
 }
 
-func (i *MysqlErrer) encodeErrCode() string {
-	return fmt.Sprintf("%s/%s/%s", errCodeMsg[i.code], mysqlOpTypeMsg[mysqlOpType(i.codeSub)], mysqlOpObjMsg[mysqlOpObj(i.codeSubSub)])
+func (i *MysqlErrer) getErrCodeSubMsg() string {
+	return mysqlOpTypeMsg[mysqlOpType(i.codeSub)]
+}
+
+func (i *MysqlErrer) getErrCodeSubSubMsg() string {
+	return mysqlOpObjMsg[mysqlOpObj(i.codeSubSub)]
 }
 
 func (i *MysqlErrer) Error() string {

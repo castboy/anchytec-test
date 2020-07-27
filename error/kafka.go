@@ -1,7 +1,5 @@
 package error
 
-import "fmt"
-
 type kafkaOpType errCodeSub
 type kafkaOpObj errCodeSubSub
 
@@ -44,8 +42,12 @@ func NewKafkaErrer(errOrigin error, opType kafkaOpType, opObj kafkaOpObj, commen
 	return &KafkaErrer{base}
 }
 
-func (i *KafkaErrer) encodeErrCode() string {
-	return fmt.Sprintf("%s, %s, %s", errCodeMsg[i.code], kafkaOpTypeMsg[kafkaOpType(i.codeSub)], kafkaOpObjMsg[kafkaOpObj(i.codeSubSub)])
+func (i *KafkaErrer) getErrCodeSubMsg() string {
+	return kafkaOpTypeMsg[kafkaOpType(i.codeSub)]
+}
+
+func (i *KafkaErrer) getErrCodeSubSubMsg() string {
+	return kafkaOpObjMsg[kafkaOpObj(i.codeSubSub)]
 }
 
 func (i *KafkaErrer) Error() string {

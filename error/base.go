@@ -97,3 +97,7 @@ func (me *baseErrer) encodeComment() string {
 func (me *baseErrer) getOriginErr() error {
 	return me.originErr
 }
+
+func (i *baseErrer) getErrCodeMsg() string {
+	return errCodeMsg[i.code]
+}

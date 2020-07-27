@@ -1,7 +1,5 @@
 package error
 
-import "fmt"
-
 type tradeArg errCodeSubSub
 
 const (
@@ -59,8 +57,12 @@ func NewTradeArgsErrer(errOrigin error, reqType argsType, tradeArg tradeArg, com
 	return &TradeArgsErrer{base}
 }
 
-func (i *TradeArgsErrer) encodeErrCode() string {
-	return fmt.Sprintf("%s/%s/%s", errCodeMsg[i.code], argsTypeMsg[argsType(i.codeSub)], tradeArgsMsg[tradeArg(i.codeSubSub)])
+func (i *TradeArgsErrer) getErrCodeSubMsg() string {
+	return argsTypeMsg[argsType(i.codeSub)]
+}
+
+func (i *TradeArgsErrer) getErrCodeSubSubMsg() string {
+	return tradeArgsMsg[tradeArg(i.codeSubSub)]
 }
 
 func (i *TradeArgsErrer) Error() string {
