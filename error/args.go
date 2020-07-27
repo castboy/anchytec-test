@@ -1,4 +1,4 @@
-package core
+package error
 
 type reqType errCodeSub
 type tradeReq errCodeSubSub

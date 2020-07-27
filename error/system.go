@@ -1,3 +1,3 @@
-package core
+package error
 
 var errMsgSystem = map[errCodeSub]string{}

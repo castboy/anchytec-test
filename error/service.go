@@ -1,4 +1,4 @@
-package core
+package error
 
 type encodeError interface{
 	encodeErrCode() string

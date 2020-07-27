@@ -1,3 +1,3 @@
-package core
+package error
 
 var errMsgTrade = map[errCodeSub]string{}
