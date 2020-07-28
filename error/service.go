@@ -6,10 +6,6 @@ type encodeError interface{
 	encodeCallFunc() string
 	encodeComment() string
 
-	errCodeMsgor
-}
-
-type errCodeMsgor interface {
 	getErrCodeMsg() string
 	getErrCodeSubMsg() string
 	getErrCodeSubSubMsg() string
