@@ -6,7 +6,7 @@ import (
 
 const (
 	newDeep    = 4 //NewMysqlErrer()/NewKafkaErrer()...
-	appendDeep = 4 // AppendCallFunc()
+	appendDeep = 3 // AppendCallFunc()
 )
 
 func getCallFunc(deep int) string {
