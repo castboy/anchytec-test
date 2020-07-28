@@ -79,11 +79,6 @@ func (me *baseErrer) appendCallFunc(f ...string) {
 	me.callFunc = append(me.callFunc, f...)
 }
 
-func (me *baseErrer) AppendCallFunc() {
-	f := getCallFunc(appendDeep)
-	me.appendCallFunc(f)
-}
-
 func (me *baseErrer) appendComment(cmt ...Comment) {
 	me.comment = append(me.comment, cmt...)
 }

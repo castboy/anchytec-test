@@ -7,14 +7,14 @@ import (
 
 func TestNewMysqlErrer(t *testing.T) {
 	err := NewMysqlErrerUpTwo()
-	err.(*MysqlErrer).AppendCallFunc()
+	AppendCallFunc(err.(encodeError))
 
 	fmt.Println(err.Error())
 }
 
 func NewMysqlErrerUpTwo() error {
 	err := NewMysqlErrerUpOne()
-	err.(*MysqlErrer).AppendCallFunc()
+	AppendCallFunc(err.(encodeError))
 
 	fmt.Println(err.Error())
 
