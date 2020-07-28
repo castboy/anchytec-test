@@ -1,13 +1,14 @@
 package error
 
 import (
+	"anchytec/error/constant"
 	"encoding/json"
 )
 
 type baseErrer struct {
-	code       errCode
-	codeSub    errCodeSub
-	codeSubSub errCodeSubSub
+	code       constant.ErrCode
+	codeSub    constant.ErrCodeSub
+	codeSubSub constant.ErrCodeSubSub
 	originErr  error
 	callFunc   []string
 	comment    []Comment
@@ -18,36 +19,12 @@ type Comment struct {
 	v interface{}
 }
 
-type errCode uint
-type errCodeSub uint
-type errCodeSubSub uint
-
-const (
-	systemErr errCode = iota + 1
-	tradeErr
-	mysqlErr
-	kafkaErr
-	argsErr
-	assertErr
-	unknowErr
-)
-
-var errCodeMsg = map[errCode]string{
-	systemErr: "System",
-	tradeErr:  "Trade",
-	mysqlErr:  "Mysql",
-	kafkaErr:  "Kafka",
-	argsErr:   "Args",
-	assertErr: "Assert",
-	unknowErr: "Unknow",
-}
-
 func newErr() *baseErrer {
 	res := &baseErrer{}
 	return res
 }
 
-func (me *baseErrer) init(errOrigin error, code errCode, codeSub errCodeSub, codeSubSub errCodeSubSub, comment ...Comment) {
+func (me *baseErrer) init(errOrigin error, code constant.ErrCode, codeSub constant.ErrCodeSub, codeSubSub constant.ErrCodeSubSub, comment ...Comment) {
 	me.setCode(code)
 	me.setCodeSub(codeSub)
 	me.setCodeSubSub(codeSubSub)
@@ -59,15 +36,15 @@ func (me *baseErrer) init(errOrigin error, code errCode, codeSub errCodeSub, cod
 	me.appendComment(comment...)
 }
 
-func (me *baseErrer) setCode(code errCode) {
+func (me *baseErrer) setCode(code constant.ErrCode) {
 	me.code = code
 }
 
-func (me *baseErrer) setCodeSub(sub errCodeSub) {
+func (me *baseErrer) setCodeSub(sub constant.ErrCodeSub) {
 	me.codeSub = sub
 }
 
-func (me *baseErrer) setCodeSubSub(subSub errCodeSubSub) {
+func (me *baseErrer) setCodeSubSub(subSub constant.ErrCodeSubSub) {
 	me.codeSubSub = subSub
 }
 
@@ -106,5 +83,5 @@ func (me *baseErrer) getOriginErr() error {
 }
 
 func (i *baseErrer) getErrCodeMsg() string {
-	return errCodeMsg[i.code]
+	return constant.ErrCodeMsg[i.code]
 }

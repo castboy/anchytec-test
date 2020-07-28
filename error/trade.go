@@ -1,3 +1,5 @@
 package error
 
-var errMsgTrade = map[errCodeSub]string{}
+import "anchytec/error/constant"
+
+var errMsgTrade = map[constant.ErrCodeSub]string{}

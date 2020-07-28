@@ -1,3 +1,5 @@
 package error
 
-var errMsgUnknow = map[errCodeSub]string{}
+import "anchytec/error/constant"
+
+var errMsgUnknow = map[constant.ErrCodeSub]string{}
