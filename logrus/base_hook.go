@@ -21,13 +21,17 @@ type myHook struct {
 	level Level
 	ch    chan *Entry
 	io    io.Writer
+
+	module string
 }
 
-func NewMyHook(level Level, io io.Writer) *myHook {
-	return &myHook{level: level, ch: make(chan *Entry, 1024), io: io}
+func NewMyHook(level Level, module string, io io.Writer) *myHook {
+	return &myHook{level: level, ch: make(chan *Entry, 1024), io: io, module: module}
 }
 
 func (hook *myHook) Fire(entry *Entry) error {
+	entry.Data["module"] = hook.module
+
 	hook.ch <- entry
 	return nil
 }
@@ -44,7 +48,12 @@ func (hook *myHook) WriteLoop() {
 			entry := <-hook.ch
 			//hook.io.WriteString(entry.Data["key"].(string) + "\n")
 			b, _ := entry.Logger.Formatter.Format(entry)
-			hook.io.Write(b)
+
+			buf := &bytes.Buffer{}
+			buf.WriteString(fmt.Sprintf("%+v>>%+v>>%+v||", entry.Caller.File, entry.Caller.Function, entry.Caller.Line))
+			buf.Write(b)
+
+			hook.io.Write(buf.Bytes())
 		}
 	}()
 }
@@ -66,10 +75,11 @@ func (format *myFormat) Format(entry *Entry) ([]byte, error) {
 	buf := &bytes.Buffer{}
 	buf.WriteString(`{"level": ` + entry.Level.String() + `,`)
 
-	buf.WriteString(`"key": ` + entry.Data["key"].(string) + `,`)
-	buf.WriteString(`"module": ` + entry.Data["module"].(string) + `,`)
+	for i := range entry.Data {
+		buf.WriteString(fmt.Sprintf(`"%s": "%+v",`, i, entry.Data[i]))
+	}
 
-	buf.WriteString(`"time": ` + entry.Time.Format("2006-01-02 15:04:05"))
+	buf.WriteString(`"time": ` + entry.Time.UTC().Format("2006-01-02 15:04:05"))
 	buf.WriteString("}\n")
 
 	return buf.Bytes(), nil
@@ -83,7 +93,10 @@ func main() {
 		log.Fatal(err)
 	}
 
-	hook := NewMyHook(InfoLevel, hk)
+	logger.SetLevel(TraceLevel)
+	logger.SetReportCaller(true)
+
+	hook := NewMyHook(ErrorLevel, "MODULE", hk)
 	hook.WriteLoop()
 
 	logger.AddHook(hook)
@@ -94,8 +107,10 @@ func main() {
 	}
 
 	logger.SetOutput(lg)
-	logger.SetFormatter(&myFormat{})
+	logger.SetFormatter(&myFormat{}) // `TextFormatter` / `JSONFormatter` lead to panic sometimes; can implement by self;
 
+	//logger.SetFormatter(&JSONFormatter{})
+	//logger.SetFormatter(&TextFormatter{})
 	go func() {
 		value := &MarketRecord{
 			Market:         "H33HKD",
@@ -108,7 +123,8 @@ func main() {
 		}
 
 		for {
-			logger.WithField("module", "PRICE_THROW").WithField("key", fmt.Sprintf("%+v", *value)).Info()
+			logger.WithField("value", fmt.Sprintf("%+v", *value)).Info()
+			logger.WithField("value", fmt.Sprintf("%+v", *value)).Error()
 		}
 	}()
 
